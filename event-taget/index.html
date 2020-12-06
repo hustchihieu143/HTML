@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <h1>Phan Chi Hieu</h1>
+    </div>
+    <input id="new-item" type="text">
+    <button id="add-btn" >Add</button>
+    <ul id="containt">
+
+    </ul>
+
+    <script type="text/javascript">
+        var localStorageKey = 'tododList';    // khai báo localStorageKey
+        // var todoList = [
+        //     'Hieu dep trai',
+        //     'Hieu hoc gioi',
+        //     'Hieu hat hay'
+        // ];
+        var todoList = JSON.parse(localStorage.getItem(localStorageKey));    // get dữ liệu trong localStorage
+        var addBtn = document.getElementById('add-btn');
+        var htmlList = document.getElementById('containt');
+        var input = document.getElementById("new-item");
+
+        addBtn.addEventListener('click', addItem);
+        input.addEventListener('click', displaySessionStorageInput);    // lưu giá trị sesion khi trình duyệt đang mở.
+        input.value = sessionStorage.getItem('foo');
+        
+        htmlList.addEventListener('click',onClickDelete);
+        
+        function onClickDelete(event) {
+            var button = event.target;
+            var index = parseInt(button.dataset.id);
+            todoList.splice(index,1);
+            render(todoList);
+        }
+
+        function displaySessionStorageInput() {
+            sessionStorage.setItem('foo', input.value);
+        }
+
+        function addItem() {
+            var newInput = input.value;
+            todoList.push(newInput);
+            render(todoList);
+            input.value = '';
+            localStorage.setItem(localStorageKey, JSON.stringify(todoList));             // set localStorage 
+        }
+
+
+        function render(todoList) {
+            var cnt = 0;
+            var result = todoList.map(function (element, i) {
+                return '<li>' + element + ' <button data-id = "'+ i +'">Delete</button>' + '</li>';
+            })
+            htmlList.innerHTML = result.join('');
+        }
+        render(todoList);
+    </script>
+</body>
+
+</html>

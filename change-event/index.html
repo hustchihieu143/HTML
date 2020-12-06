@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <span>Age: </span>
+    <select id="filter-age">
+        <option>20</option>
+        <option>19</option>
+        <option>18</option>
+        <option>All</option>
+    </select>
+    
+    <span>Name: </span>
+    <input id="search-name" type="text">
+    <button id = "btn-searchName">Search</button>
+
+    <table id="table-students">
+    </table>
+    <script type="text/javascript">
+        var students = [
+            {name: 'Hieu', age : 20},
+            {name: 'Duong', age : 18},
+            {name: 'Dat', age : 19},
+            {name: 'Thang', age : 18},
+            {name: 'Thanh', age : 20}
+        ];
+        
+        var searchName = document.getElementById('btn-searchName');
+        searchName.addEventListener('click', onSearchName);
+        function onSearchName() {
+            var inputText = document.getElementById('search-name').value;
+            var content = students.filter(function (student) {
+                return student.name.indexOf(inputText) >= 0;
+            })
+            render(content);
+        }
+
+        var filterAge = document.getElementById('filter-age');
+        filterAge.addEventListener('change', renderAge);
+        function renderAge() {
+            var ageSelect = filterAge.value;
+            if(ageSelect == 'All') return render(students);
+            var content = students.filter(function(student) {
+                return student.age == ageSelect;
+            })
+            render(content);
+        }
+        function render(students) {
+            var tableStudent = document.getElementById('table-students');
+            var content = students.map(function(student) {
+                return '<tr><td>' + student.name + '</td><td>' + student.age + '</td></tr>';
+            })
+            tableStudent.innerHTML = content.join('');
+        }
+        render(students);
+    </script>
+</body>
+</html>
