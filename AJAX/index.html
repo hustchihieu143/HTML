@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <h1>Phan Chi Hieu</h1>
+    </div>
+    <a href="./viewItem.html">View Items</a>
+    <input id="new-contentItem" type="text">
+    <button id="add-btn" >Add</button>
+    <ul id="containt">
+    </ul>
+    
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+        var addBtn = document.getElementById('add-btn');
+        addBtn.addEventListener('click', addItem);
+        var items;
+        axios.get('http://localhost:3000/todos').then(function(response) {
+            items = response.data;
+            console.log(items);
+            render(items);
+        }) 
+
+        var input = document.getElementById("new-contentItem");
+        // input.addEventListener('click', displaySessionStorageInput);    // lưu giá trị sesion khi trình duyệt đang mở.
+        // input.value = sessionStorage.getItem('foo');
+        // function displaySessionStorageInput() {
+        //     sessionStorage.setItem('foo', input.value);
+        // }
+
+        function addItem() {
+            var newInput = {
+                "content" : input.value
+            };
+            axios.post('http://localhost:3000/todos', newInput)
+            render(items);
+            input.value = '';
+        }
+        function render(items) {
+            var htmlList = document.getElementById('containt');
+            var result = items.map(function (element) {
+                return '<li>' + element.content + ' <a href = "./editItem.html"> Edit </a>' + '</li>';
+            })
+            htmlList.innerHTML = result.join('');
+        }
+        // render(items);
+    </script>
+</body>
+
+</html>

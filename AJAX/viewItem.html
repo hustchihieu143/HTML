@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul id="content"></ul>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+        var showContent = document.getElementById('content');
+        axios.get('http://localhost:3000/todos').then(function(response) {
+            var items = response.data;
+            render(items);
+        })
+
+        function render(items) {
+            var result = items.map(function (element) {
+                return '<li>' + element.content + '</li>';
+            })
+            showContent.innerHTML = result.join('');
+        }
+        
+    </script>
+</body>
+</html>
